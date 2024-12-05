@@ -1,3 +1,5 @@
+<img src="resources/banner.jpg" alt="banner with text satsukashi" width="50%">
+
 # satsukashii
 
 Satsukashi (さつかし | Satsukashi)
@@ -16,6 +18,3 @@ Combination of "satoshi" and "natsukashii" (nostalgia), ideal for historical ana
 # license
 
 it's a DAYW license, that you can check here [LICENSE](LICENSE)
-
-
-
