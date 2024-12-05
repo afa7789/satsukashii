@@ -1,0 +1,26 @@
+
+1- get historical bitcoin data, daily, and register it some how.
+    - so a bitcoin price at timestamp fetcher here.
+    - it could be used elsewhere, independent of this project ( it will be a library ).
+    - create a interface, and depending on the exchange/place/apikey call from there.
+
+2- a bigmac prices consulting. ( DONE )
+
+3- inflation array (done)
+
+4- bitcoin calculator (DONE)
+
+5- try to predict the price of future days, month, year as gimmick fun, just to plot a DCA.
+
+6- use the bitcoin parts, to be able to calculate the DCA with daily,weekly,montlhy, bimontlhy, trimester, semester,yearly strategy. ( start with the first 3).
+    - the starting and ending date of the strategy must make sense.
+    - have to plot the amount gotten.
+
+7 - using the inflation thing, try to calculate a % of gain above inflation, to compare with bitcoin.
+
+8 - it would be cool to calculate the ATH fixing the dollar/or other currency, over it's inflation, to see the "real ATH".
+    - get the ATH, and fix it compared to the inflation.
+
+9 - get gold historical prices
+    - gram price consulting ( convert it to KGs,ounces/quilates,or gram as the user request to see this data.)
+    - add silver in the future.
