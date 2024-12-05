@@ -1,8 +1,8 @@
 package calc
 
 // CalculateBitcoinAmount calculates the amount of Bitcoin that can be bought with a given amount of money at a given price.
-func CalculateBitcoinAmount(price, amount float64) float64 {
-	return amount / price
+func CalculateBitcoinAmount(bitcoin_price, amount float64) float64 {
+	return amount / bitcoin_price
 }
 
 // CalculateMoneyAmount calculates the amount of money that would be obtained by selling a given amount of Bitcoin at a given price.
@@ -19,4 +19,8 @@ func CalculateBitcoinPrice(amount, bitcoinAmount float64) float64 {
 func CalculateGains(initialInvestment, bitcoinAmount, currentPrice float64) float64 {
 	currentInvestmentValue := bitcoinAmount * currentPrice
 	return currentInvestmentValue - initialInvestment
+}
+
+func BTCtoSATS(btc float64) float64 {
+	return btc * 100000000
 }

@@ -14,6 +14,8 @@ type BigMacData struct {
 	data map[string]map[string]float64
 }
 
+const numberOfBits = 64
+
 // NewBigMacData constructs the BigMacData from the given CSV file path
 func NewBigMacData(filePath string) (*BigMacData, error) {
 	file, err := os.Open(filePath)
@@ -30,17 +32,26 @@ func NewBigMacData(filePath string) (*BigMacData, error) {
 
 	data := make(map[string]map[string]float64)
 	for _, record := range records[1:] { // Skip header
+		// log record
+		// log.Printf("record: %v", record)
+		length := len(record)
+
 		currencyCode := record[2]
-		date := record[7]
-		gdpLocal, err := strconv.ParseFloat(record[5], 64)
+		date := record[length-1]
+		priceLocal, err := strconv.ParseFloat(record[3], numberOfBits)
 		if err != nil {
-			return nil, err
+			// first try position
+			// log.Errorf("skipping record with invalid GDP local value: %v, invalid: %d,", record, length)
+			// for i, v := range record {
+			// 	log.Printf("record[%d]: %v", i, v)
+			// }
+			continue
 		}
 
 		if _, exists := data[currencyCode]; !exists {
 			data[currencyCode] = make(map[string]float64)
 		}
-		data[currencyCode][date] = gdpLocal
+		data[currencyCode][date] = priceLocal
 	}
 
 	return &BigMacData{data: data}, nil

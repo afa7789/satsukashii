@@ -21,17 +21,18 @@ type BitcoinPrice struct {
 // BitcoinPriceFetcher is an interface for fetching Bitcoin price data
 type BitcoinPriceFetcher interface {
 	FetchHistoricalData(startDate time.Time) (map[time.Time]BitcoinPrice, error)
+	FetchPriceByDate(date time.Time) (BitcoinPrice, error)
 }
 
-// CSVBitcoinPriceFetcher fetches Bitcoin price data from a CSV file
-type CSVBitcoinPriceFetcher struct {
+// BTCPricesCSV fetches Bitcoin price data from a CSV file
+type BTCPricesCSV struct {
 	// filePath string
 	prices map[time.Time]BitcoinPrice
 }
 
-// NewCSVBitcoinPriceFetcher creates a new CSVBitcoinPriceFetcher and loads the data
-func NewCSVBitcoinPriceFetcher(filePath string) (*CSVBitcoinPriceFetcher, error) {
-	fetcher := &CSVBitcoinPriceFetcher{
+// NewBTCPricesCSV creates a new BTCPricesCSV and loads the data
+func NewBTCPricesCSV(filePath string) (*BTCPricesCSV, error) {
+	fetcher := &BTCPricesCSV{
 		// filePath: filePath,
 		prices: make(map[time.Time]BitcoinPrice),
 	}
@@ -50,12 +51,13 @@ func NewCSVBitcoinPriceFetcher(filePath string) (*CSVBitcoinPriceFetcher, error)
 
 	for _, record := range records[1:] { // Skip header
 		start, _ := time.Parse("2006-01-02", record[0])
-		open := parseFloat(record[1])
-		high := parseFloat(record[2])
-		low := parseFloat(record[3])
-		close := parseFloat(record[4])
-		volume := parseFloat(record[5])
-		marketCap := parseFloat(record[6])
+		// _ := time.Parse("2006-01-02", record[1]) end data
+		open := parseFloat(record[2])
+		high := parseFloat(record[3])
+		low := parseFloat(record[4])
+		close := parseFloat(record[5])
+		volume := parseFloat(record[6])
+		marketCap := parseFloat(record[7])
 		fetcher.prices[start] = BitcoinPrice{
 			Start:     start,
 			Open:      open,
@@ -71,7 +73,7 @@ func NewCSVBitcoinPriceFetcher(filePath string) (*CSVBitcoinPriceFetcher, error)
 }
 
 // FetchHistoricalData fetches historical Bitcoin price data from the preloaded data
-func (f *CSVBitcoinPriceFetcher) FetchHistoricalData(startDate time.Time) (map[time.Time]BitcoinPrice, error) {
+func (f *BTCPricesCSV) FetchHistoricalData(startDate time.Time) (map[time.Time]BitcoinPrice, error) {
 	prices := make(map[time.Time]BitcoinPrice)
 	for date, price := range f.prices {
 		if date.After(startDate) {
@@ -82,7 +84,7 @@ func (f *CSVBitcoinPriceFetcher) FetchHistoricalData(startDate time.Time) (map[t
 }
 
 // FetchPriceByDate fetches the Bitcoin price for a specific date
-func (f *CSVBitcoinPriceFetcher) FetchPriceByDate(date time.Time) (BitcoinPrice, error) {
+func (f *BTCPricesCSV) FetchPriceByDate(date time.Time) (BitcoinPrice, error) {
 	price, exists := f.prices[date]
 	if !exists {
 		return BitcoinPrice{}, os.ErrNotExist
