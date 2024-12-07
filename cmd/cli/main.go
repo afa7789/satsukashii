@@ -16,7 +16,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	btcData, err := bitcoin_price.NewBTCPricesCSV("resources/csv/bitcoin_2010-07-17_2024-12-05.csv")
+
+	var btcData bitcoin_price.BitcoinPriceFetcher
+	btcData, err = bitcoin_price.NewBTCPricesCSV("resources/csv/bitcoin_2010-07-17_2024-12-05.csv")
 	if err != nil {
 		panic(err)
 	}

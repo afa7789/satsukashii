@@ -20,7 +20,9 @@ linters-settings:
           - "!$test" # Exclude test files if needed
         allow:
           - $gostd # Always allow Go standard library
-          - github.com/afa7789/satsukashii/pkg/bigmac
+          - github.com/afa7789/satsukashii
+          - github.com/mattn/go-sqlite3
+          # - github.com/afa7789/satsukashii/pkg/bigmac
         deny:
           - pkg: io/ioutil
             desc: "Replaced by io and os packages since Go 1.16: https://tip.golang.org/doc/go1.16#ioutil"

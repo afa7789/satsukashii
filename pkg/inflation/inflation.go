@@ -94,3 +94,29 @@ func (cpi *CPIInflation) CalculateInflationSince(start, end time.Time, currentVa
 	// Apply the accumulated inflation to the current value
 	return currentValue * accumulatedInflation
 }
+
+func (cpi *CPIInflation) CalculateInflationSinceReversed(start, end time.Time, currentValue float64) float64 {
+	accumulatedInflation := 1.0 // start with 1 (no inflation)
+
+	// Loop through the years from start year to end year
+	for i := start.Year(); i <= end.Year(); i++ {
+		monthlyInflation := cpi.data[i]
+		if monthlyInflation == nil {
+			continue
+		}
+
+		// Loop through months (January is 0, December is 11)
+		for j := 0; j < len(monthlyInflation); j++ {
+			// Generate the month and year to compare with the range
+			newDate := time.Date(i, time.Month(j+1), 1, 0, 0, 0, 0, time.UTC)
+
+			// Only apply inflation if the month is within the range [start, end]
+			if newDate.After(start) && newDate.Before(end) || newDate.Equal(start) || newDate.Equal(end) {
+				accumulatedInflation *= monthlyInflation[j]
+			}
+		}
+	}
+
+	// Apply the accumulated inflation to the current value
+	return currentValue / accumulatedInflation
+}

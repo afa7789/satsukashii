@@ -1,3 +1,4 @@
+// in this file, we are implementing the fetcher with the CSV.
 package bitcoin_price
 
 import (
@@ -6,23 +7,6 @@ import (
 	"strconv"
 	"time"
 )
-
-// BitcoinPrice represents the structure of the Bitcoin price data
-type BitcoinPrice struct {
-	Start     time.Time
-	Open      float64
-	High      float64
-	Low       float64
-	Close     float64
-	Volume    float64
-	MarketCap float64
-}
-
-// BitcoinPriceFetcher is an interface for fetching Bitcoin price data
-type BitcoinPriceFetcher interface {
-	FetchHistoricalData(startDate time.Time) (map[time.Time]BitcoinPrice, error)
-	FetchPriceByDate(date time.Time) (BitcoinPrice, error)
-}
 
 // BTCPricesCSV fetches Bitcoin price data from a CSV file
 type BTCPricesCSV struct {
@@ -59,13 +43,14 @@ func NewBTCPricesCSV(filePath string) (*BTCPricesCSV, error) {
 		volume := parseFloat(record[6])
 		marketCap := parseFloat(record[7])
 		fetcher.prices[start] = BitcoinPrice{
-			Start:     start,
-			Open:      open,
-			High:      high,
-			Low:       low,
-			Close:     close,
-			Volume:    volume,
-			MarketCap: marketCap,
+			Start:        start,
+			Open:         open,
+			High:         high,
+			Low:          low,
+			Close:        close,
+			Volume:       volume,
+			MarketCap:    marketCap,
+			CurrencyCode: "USD",
 		}
 	}
 
