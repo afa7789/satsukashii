@@ -1,4 +1,4 @@
-<img src="resources/banner.jpg" alt="banner with text satsukashi" width="50%">
+<img src="assets/banner.jpg" alt="banner with text satsukashi" width="50%">
 
 # satsukashii
 

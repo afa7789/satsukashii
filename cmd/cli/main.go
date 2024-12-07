@@ -12,13 +12,13 @@ import (
 
 func main() {
 	testerfunction()
-	bmData, err := bigmac.NewBigMacData("resources/csv/big-mac-source-data-v2.csv")
+	bmData, err := bigmac.NewBigMacData("assets/csv/big-mac-source-data-v2.csv")
 	if err != nil {
 		panic(err)
 	}
 
 	var btcData bitcoin_price.BitcoinPriceFetcher
-	btcData, err = bitcoin_price.NewBTCPricesCSV("resources/csv/bitcoin_2010-07-17_2024-12-05.csv")
+	btcData, err = bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2024-12-05.csv")
 	if err != nil {
 		panic(err)
 	}
@@ -67,7 +67,7 @@ func main() {
 
 func testerfunction() {
 	// big mac data from file
-	bmd, err := bigmac.NewBigMacData("resources/csv/big-mac-source-data-v2.csv")
+	bmd, err := bigmac.NewBigMacData("assets/csv/big-mac-source-data-v2.csv")
 	if err != nil {
 		panic(err)
 	}
@@ -75,7 +75,7 @@ func testerfunction() {
 	bigmac_price, ok := bmd.GetPrice("USD", date)
 	if ok {
 		log.Printf("Price for USD on %s: %f", date, bigmac_price)
-		bpcsv, err := bitcoin_price.NewBTCPricesCSV("resources/csv/bitcoin_2010-07-17_2024-12-05.csv")
+		bpcsv, err := bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2024-12-05.csv")
 		if err != nil {
 			panic(err)
 		}

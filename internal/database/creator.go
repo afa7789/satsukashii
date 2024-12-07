@@ -7,20 +7,21 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func CreateDB(filePath string) {
+func CreateDB(filePath string) *sql.DB {
 	// Connect to the SQLite database
 	db, err := sql.Open("sqlite3", filePath)
 	if err != nil {
 		log.Fatal(err)
+		return nil
 	}
-	defer db.Close()
+	// defer db.Close()
 
 	// empty table and drop it if it exists
 	droptable := `DROP TABLE IF EXISTS bitcoin_prices;`
 	_, err = db.Exec(droptable)
 	if err != nil {
 		log.Println("Error dropping table:", err)
-		return
+		return nil
 	}
 
 	// Create the table if it doesn't exist
@@ -39,8 +40,9 @@ func CreateDB(filePath string) {
 	_, err = db.Exec(createTable)
 	if err != nil {
 		log.Println("Error on creating table(s):", err)
-		return
+		return nil
 	}
 
 	log.Println("Database and table set up successfully!")
+	return db
 }
