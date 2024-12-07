@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"sort"
 	"time"
@@ -18,10 +19,15 @@ func main() {
 	}
 
 	var btcData bitcoin_price.BitcoinPriceFetcher
-	btcData, err = bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2024-12-05.csv")
+
+	// Connect to the SQLite database
+	db, err := sql.Open("sqlite3", "assets/database/satsukashii.db")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
+		return
 	}
+	btcData = bitcoin_price.NewBitcoinPriceDB(db)
+
 	date := "2010-07-10"
 	parsedDate, err := time.Parse("2006-01-02", date)
 	if err != nil {

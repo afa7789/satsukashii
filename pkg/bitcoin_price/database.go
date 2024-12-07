@@ -3,6 +3,8 @@ package bitcoin_price
 import (
 	"database/sql"
 	"time"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type BitcoinPriceDB struct {

@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/afa7789/satsukashii/pkg/bitcoin_price"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 // wrapper of a database

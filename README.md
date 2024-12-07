@@ -6,6 +6,14 @@ Satsukashi (さつかし | Satsukashi)
 
 Combination of "satoshi" and "natsukashii" (nostalgia), ideal for historical analysis. This project is a backend/html pages that will be use to showcase bitcoin historical prices and compare it to other currencies, if fine maybe even bigmacs and other investments. It's mainly a hobby project.
 
+## running this project
+
+```
+cp .env.example .env
+touch assets/database/satsukashii.db
+make ingest
+```
+
 ##  To install the linter:
 
 ```bash
