@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"log"
+	"os"
 	"sort"
 	"time"
 
@@ -11,6 +12,22 @@ import (
 	calc "github.com/afa7789/satsukashii/pkg/calculator"
 )
 
+// main is the entry point of the application.
+//
+// It performs the following operations:
+// 1. Calls a tester function to perform initial tests or setups.
+// 2. Loads Big Mac pricing data from a CSV file using the NewBigMacData function.
+// 3. Connects to a SQLite database named "satsukashii.db" to access Bitcoin price data.
+// 4. Instantiates a BitcoinPriceFetcher using the established database connection.
+// 5. Parses a given date string ("2010-07-10") into a time.Time object.
+// 6. Fetches historical Bitcoin price data for the parsed date.
+// 7. Extracts and sorts the dates from the fetched historical data.
+// 8. For each sorted date, it retrieves the Big Mac price corresponding to that date’s timestamp.
+// 9. Calculates the equivalent Bitcoin amount based on the fetched Big Mac price.
+// 10. Logs the date, the Big Mac price, and the calculated SATS (Bitcoin’s subunit) amount.
+//
+// The function demonstrates integrating data from CSV sources and SQLite databases,
+// while processing and outputting financial metrics derived from historical records.
 func main() {
 	testerfunction()
 	bmData, err := bigmac.NewBigMacData("assets/csv/big-mac-source-data-v2.csv")
@@ -49,6 +66,8 @@ func main() {
 		return dates[i].Before(dates[j]) // Compare dates
 	})
 
+	println(len(dates))
+	os.Exit(0)
 	// Step 3: Iterate over sorted dates and fetch the corresponding BitcoinPrice
 	for _, date := range dates {
 		data := historicalData[date]
