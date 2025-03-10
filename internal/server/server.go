@@ -5,6 +5,7 @@ import (
 	"log"
 	"strings"
 
+	"github.com/afa7789/satsukashii/internal/bigmac"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 )
@@ -43,11 +44,19 @@ func New() *Server {
 		EnablePrintRoutes: false,
 	})
 
+	cd, err := bigmac.GenerateChartData(
+		500, // height
+		700, // width
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// ================ROUTES====================
 	// Static Files
 	r.Static("/public", "./web/static")
 
-	r.Get("/", server.indexPage())
+	r.Get("/", server.chartPage(cd))
 
 	server.router = r
 	return server
