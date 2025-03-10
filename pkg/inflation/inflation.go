@@ -1,3 +1,7 @@
+// DISCLAIMER
+// this package was meant to be used in the future together with @root/assets/csv/cpi-first-draft.csv, as a way to check for inflation in prices
+// I didn't had to time to add the math of inflation to prices or I'm inclined in doing so without sponsors.
+
 package inflation
 
 import (

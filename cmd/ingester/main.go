@@ -1,3 +1,8 @@
+// DISCLAIMER
+// this is just a placeholder, as I was brainstorming making it a service that would be kept in the air for a long time
+// I don't care enough to make it work, so I'm just going to leave it here as a placeholder
+// I would need an API for it.
+
 package main
 
 import (

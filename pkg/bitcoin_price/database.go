@@ -1,3 +1,4 @@
+// DISCLAIMER for the initial version we are going to use btc_usd.go, cause I don't want to deal with the database.
 package bitcoin_price
 
 import (

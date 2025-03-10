@@ -157,6 +157,10 @@ func (b *BigMacData) GetPriceInBitcoin(currencyCode string, timestamp time.Time,
 	return priceInBitcoin, true
 }
 
+// DISCLAIMER
+// I was looking to make a live/Dynamic product instead of static one to showcase the prices.
+// but it's just too much work for me now, so I'm leaving it commented, this was just a draft//was brainstorming.
+
 // func (bmd *BigMacData) GetTrendLine(currencyCode string) (float64, float64, error) {
 // 	dateMap, exists := bmd.data[currencyCode]
 // 	if !exists {
