@@ -92,6 +92,28 @@
 </head>
 
 <body>
+    <div class="form-container">
+        <h2>How much did I fuck up?</h2>
+        <label for="slider">Slide to pick a date:</label>
+         
+        <input type="range" id="slider" min="0" max="99" value="0">
+        <p>Selected Date: <span id="date-picked">2010-07-18</span> (BTC Price: <span id="btc-price">0.0858</span> USD)</p>
+    
+        <form onsubmit="calculate(); return false;">
+            <div>
+                What if you invested on <span id="date-picked">2010-07-18</span>?
+                <br>Slide to pick a different date and see how much you'd have today.
+            </div>
+            <br>
+            <label for="number">Enter how much USD you could have invested:</label>
+            <br>
+            <input id="number" type="text" name="investment" value="" placeholder="e.g., 100">
+            <br>
+            <button type="submit" name="button" class="btn btn-secondary">Calculate</button>
+            <br>
+            <p id="calculated">You could have today: <b><span id="newnumber">$147,225,524.48</span></b></p>
+        </form>
+    </div>
     <div class="chart-container">
         <h2>Big Mac Price History: USD vs Satoshi</h2>
         <svg width="700" height="400" viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg">
@@ -21243,28 +21265,6 @@
                 <span>Big Mac Price (Satoshi)</span>
             </div>
         </div>
-    </div>
-    <div class="form-container">
-        <h2>How much did I fuck up?</h2>
-        <label for="slider">Slide to pick a date:</label>
-         
-        <input type="range" id="slider" min="0" max="99" value="0">
-        <p>Selected Date: <span id="date-picked">2010-07-18</span> (BTC Price: <span id="btc-price">0.0858</span> USD)</p>
-    
-        <form onsubmit="calculate(); return false;">
-            <div>
-                What if you invested on <span id="date-picked">2010-07-18</span>?
-                <br>Slide to pick a different date and see how much you'd have today.
-            </div>
-            <br>
-            <label for="number">Enter how much USD you could have invested:</label>
-            <br>
-            <input id="number" type="text" name="investment" value="" placeholder="e.g., 100">
-            <br>
-            <button type="submit" name="button" class="btn btn-secondary">Calculate</button>
-            <br>
-            <p id="calculated">You could have today: <b><span id="newnumber">$147,225,524.48</span></b></p>
-        </form>
     </div>
     <script>
         

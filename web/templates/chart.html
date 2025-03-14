@@ -95,6 +95,28 @@
 </head>
 
 <body>
+    <div class="form-container">
+        <h2>How much did I fuck up?</h2>
+        <label for="slider">Slide to pick a date:</label>
+        {{ $length := len .BTC_DATES }} <!-- Use BTC_DATES length directly -->
+        <input type="range" id="slider" min="0" max="{{subtract $length 1}}" value="0">
+        <p>Selected Date: <span id="date-picked">{{index .BTC_DATES 0}}</span> (BTC Price: <span id="btc-price">{{index .BTC_PRICES 0}}</span> USD)</p>
+    
+        <form onsubmit="calculate(); return false;">
+            <div>
+                What if you invested on <span id="date-picked">{{index .BTC_DATES 0}}</span>?
+                <br>Slide to pick a different date and see how much you'd have today.
+            </div>
+            <br>
+            <label for="number">Enter how much USD you could have invested:</label>
+            <br>
+            <input id="number" type="text" name="investment" value="" placeholder="e.g., 100">
+            <br>
+            <button type="submit" name="button" class="btn btn-secondary">Calculate</button>
+            <br>
+            <p id="calculated">You could have today: <b><span id="newnumber">--</span></b></p>
+        </form>
+    </div>
     <div class="chart-container">
         <h2>Big Mac Price History: USD vs Satoshi</h2>
         <svg width="{{.SizeSVGW}}" height="{{.SizeSVGH}}" viewBox="0 0 {{.SizeSVGW}} {{.SizeSVGH}}"
@@ -166,28 +188,6 @@
                 <span>Big Mac Price (Satoshi)</span>
             </div>
         </div>
-    </div>
-    <div class="form-container">
-        <h2>How much did I fuck up?</h2>
-        <label for="slider">Slide to pick a date:</label>
-        {{ $length := len .BTC_DATES }} <!-- Use BTC_DATES length directly -->
-        <input type="range" id="slider" min="0" max="{{subtract $length 1}}" value="0">
-        <p>Selected Date: <span id="date-picked">{{index .BTC_DATES 0}}</span> (BTC Price: <span id="btc-price">{{index .BTC_PRICES 0}}</span> USD)</p>
-    
-        <form onsubmit="calculate(); return false;">
-            <div>
-                What if you invested on <span id="date-picked">{{index .BTC_DATES 0}}</span>?
-                <br>Slide to pick a different date and see how much you'd have today.
-            </div>
-            <br>
-            <label for="number">Enter how much USD you could have invested:</label>
-            <br>
-            <input id="number" type="text" name="investment" value="" placeholder="e.g., 100">
-            <br>
-            <button type="submit" name="button" class="btn btn-secondary">Calculate</button>
-            <br>
-            <p id="calculated">You could have today: <b><span id="newnumber">--</span></b></p>
-        </form>
     </div>
     <script>
         // Wait for the DOM to load before running the script
