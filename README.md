@@ -1,28 +1,42 @@
+
+
+# Satsukashii
+
 <img src="assets/banner.jpg" alt="banner with text satsukashi" width="50%">
 
-# satsukashii
+A Go-based project for historical Bitcoin price analysis. Combines "satoshi" and "natsukashii" (nostalgia) to showcase what you might have earned if you had invested in Bitcoin earlier. Includes comparisons with other assets like Big Mac prices.
 
-Satsukashi (さつかし | Satsukashi)
+---
 
-Combination of "satoshi" and "natsukashii" (nostalgia), ideal for historical analysis. This project is a backend/html pages that will be use to showcase bitcoin historical prices and compare it to other currencies, if fine maybe even bigmacs and other investments. It's mainly a hobby project.
+## Setup
 
-## running this project
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env
+   ```
+2. Run it
+ ```
+ make run
+ ```
+---
 
-```
-cp .env.example .env
-touch assets/database/satsukashii.db
-make ingest
-```
+## Tools
 
-##  To install the linter:
+- **Go**: Primary programming language.
+- **golangci-lint**: For code quality checks.
 
+Install the linter:
 ```bash
-    go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-    # go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.59.0
-    golangci-lint --version
-    export PATH=$PATH:$(go env GOPATH)/bin
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+export PATH=$PATH:$(go env GOPATH)/bin
 ```
 
-# license
+---
 
-it's a DAYW license, that you can check here [LICENSE](LICENSE)
+## License
+
+DAYW License. See [LICENSE](LICENSE) for details.
+
+## Screenshot
+
+<img src="assets/screenshot.png" alt="screenshot of page">

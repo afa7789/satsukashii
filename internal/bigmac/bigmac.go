@@ -23,14 +23,8 @@ type PricesData struct {
 	BiggestDate     int64    `json:"biggest_date"`
 }
 
-func generatePricesData() (PricesData, error) {
+func generatePricesData(btcData bitcoin_price.BitcoinPriceFetcher) (PricesData, error) {
 	bmData, err := bigmac.NewBigMacData("assets/csv/big-mac-source-data-v2.csv")
-	if err != nil {
-		return PricesData{}, err
-	}
-
-	var btcData bitcoin_price.BitcoinPriceFetcher
-	btcData, err = bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2024-12-05.csv")
 	if err != nil {
 		return PricesData{}, err
 	}
@@ -96,6 +90,7 @@ func generatePricesData() (PricesData, error) {
 }
 
 type ChartData struct {
+	SpaceDiff      int64
 	SizeHeight     int64
 	SizeWidth      int64
 	X1Array        []float64
@@ -104,62 +99,46 @@ type ChartData struct {
 	// X2Array        []float64
 	// Y2Array        []float64
 	// Y2ArraySatoshi []float64
+	MaxPrice        float64
+	MaxPriceSatoshi float64
 }
 
-func GenerateChartData(h, w int64) (ChartData, error) {
+func GenerateChartData(btcData bitcoin_price.BitcoinPriceFetcher, h, w, spaceDiff int64) (ChartData, error) {
 	sizeHeight := h
 	sizeWidth := w
 
-	// Get the Big Mac data
-	bmData, err := generatePricesData()
+	bmData, err := generatePricesData(btcData)
 	if err != nil {
 		return ChartData{}, err
 	}
 
-	// array of lineX!
-	// Price
-	X1Array := make([]float64, 0) // dot and line
+	X1Array := make([]float64, 0)
 	Y1Array := make([]float64, 0)
-	// lineX2Array := make([]float64, 0)
-	// lineY2Array := make([]float64, 0)
-
-	// Satoshi Lines
 	YS1Array := make([]float64, 0)
-	// lineYS2Array := make([]float64, 0)
-
-	// fix max value at PriceData for Price and PriceSatoshi ?
 
 	for _, data := range bmData.Prices {
-		// fill x1, y1 and ys1
-		Y1Array = append(
-			Y1Array,
-			data.Price*float64(sizeHeight)/bmData.MaxPrice,
-		)
 		X1Array = append(
 			X1Array,
-			float64(data.Date-bmData.LowestDate)*float64(sizeWidth)/float64(bmData.BiggestDate-bmData.LowestDate),
+			float64(spaceDiff)+(float64(data.Date-bmData.LowestDate)*float64(sizeWidth)/float64(bmData.BiggestDate-bmData.LowestDate)),
+		)
+		Y1Array = append(
+			Y1Array,
+			(float64(sizeHeight)-float64(spaceDiff))-(data.Price*float64(sizeHeight)/bmData.MaxPrice),
 		)
 		YS1Array = append(
 			YS1Array,
-			data.PriceSatoshi*float64(sizeHeight)/bmData.MaxPriceSatoshi,
+			(float64(sizeHeight)-float64(spaceDiff))-(data.PriceSatoshi*float64(sizeHeight)/bmData.MaxPriceSatoshi),
 		)
 	}
 
-	// // Build the line arrays by shifting the X1Array, Y1Array and YS1Array by one element.
-	// if len(X1Array) > 1 {
-	// 	lineX2Array = append([]float64{}, X1Array[1:]...)
-	// 	lineY2Array = append([]float64{}, Y1Array[1:]...)
-	// 	lineYS2Array = append([]float64{}, YS1Array[1:]...)
-	// }
-
 	return ChartData{
-		SizeHeight:     sizeHeight,
-		SizeWidth:      sizeWidth,
-		X1Array:        X1Array,
-		Y1Array:        Y1Array,
-		Y1ArraySatoshi: YS1Array,
-		// X2Array:        lineX2Array,
-		// Y2Array:        lineY2Array,
-		// Y2ArraySatoshi: lineYS2Array,
+		SpaceDiff:       spaceDiff,
+		SizeHeight:      sizeHeight,
+		SizeWidth:       sizeWidth,
+		X1Array:         X1Array,
+		Y1Array:         Y1Array,
+		Y1ArraySatoshi:  YS1Array,
+		MaxPrice:        bmData.MaxPrice,
+		MaxPriceSatoshi: bmData.MaxPriceSatoshi,
 	}, nil
 }

@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/afa7789/satsukashii/internal/bigmac"
+	"github.com/afa7789/satsukashii/pkg/bitcoin_price"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html/v2"
 )
@@ -28,14 +29,9 @@ func New() *Server {
 
 	// https://github.com/gofiber/template
 	engine := html.New("./web/templates", "")
-	// create functions that will be used in the template
-	// those functions are used to do the pagination.
-	engine.AddFunc("add", func(a, b int) int {
-		return a + b
-	})
-	engine.AddFunc("sub", func(a, b int) int {
-		return a - b
-	})
+
+	// Add custom functions
+	engine = addEngineFunctions(engine)
 
 	// Reload the templates on each render, good for development
 	engine.Reload(true) // Optional. Default: false
@@ -44,9 +40,19 @@ func New() *Server {
 		EnablePrintRoutes: false,
 	})
 
+	var btcData bitcoin_price.BitcoinPriceFetcher
+	btcData, err := bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2024-12-05.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	bpr, _ := bitcoin_price.BtcRange(btcData, 100)
+
 	cd, err := bigmac.GenerateChartData(
-		500, // height
+		btcData,
+		400, // height
 		700, // width
+		50,  // spaceDiff
 	)
 	if err != nil {
 		log.Fatal(err)
@@ -56,7 +62,7 @@ func New() *Server {
 	// Static Files
 	r.Static("/public", "./web/static")
 
-	r.Get("/", server.chartPage(cd))
+	r.Get("/", server.chartPage(bpr, cd))
 
 	server.router = r
 	return server
