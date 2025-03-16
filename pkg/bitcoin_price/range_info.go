@@ -2,7 +2,6 @@ package bitcoin_price
 
 import (
 	"fmt"
-	"log"
 	"sort"
 	"time"
 )
@@ -70,7 +69,7 @@ func BtcRange(btcData BitcoinPriceFetcher, numberOfItems int) (BTCPricesRanged, 
 		}
 		dates = append(dates, pairs[index].date.Format("2006-01-02"))
 		prices = append(prices, pairs[index].price.Close)
-		log.Printf("Date: %v, Price: %v", pairs[index].date, pairs[index].price.Close)
+		// log.Printf("Date: %v, Price: %v", pairs[index].date, pairs[index].price.Close)
 	}
 
 	return BTCPricesRanged{Prices: prices, Dates: dates}, nil

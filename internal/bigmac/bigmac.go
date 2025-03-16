@@ -1,6 +1,7 @@
 package bigmac
 
 import (
+	"math"
 	"sort"
 	"time"
 
@@ -119,15 +120,18 @@ func GenerateChartData(btcData bitcoin_price.BitcoinPriceFetcher, h, w, spaceDif
 	for _, data := range bmData.Prices {
 		X1Array = append(
 			X1Array,
-			float64(spaceDiff)+(float64(data.Date-bmData.LowestDate)*float64(sizeWidth)/float64(bmData.BiggestDate-bmData.LowestDate)),
+			float64(spaceDiff)+(float64(data.Date-bmData.LowestDate)*float64(sizeWidth-spaceDiff)/float64(bmData.BiggestDate-bmData.LowestDate)),
 		)
 		Y1Array = append(
 			Y1Array,
-			(float64(sizeHeight)-float64(spaceDiff))-(data.Price*float64(sizeHeight)/bmData.MaxPrice),
+			(float64(sizeHeight))-(data.Price*float64(sizeHeight-spaceDiff)/bmData.MaxPrice)+float64(spaceDiff),
 		)
+
+		satoshiPriceCalculate := (math.Log(data.PriceSatoshi) / math.Log(bmData.MaxPriceSatoshi)) * float64(sizeHeight-spaceDiff)
+		satoshiEntry := (float64(sizeHeight)) - satoshiPriceCalculate + float64(spaceDiff)
 		YS1Array = append(
 			YS1Array,
-			(float64(sizeHeight)-float64(spaceDiff))-(data.PriceSatoshi*float64(sizeHeight)/bmData.MaxPriceSatoshi),
+			satoshiEntry,
 		)
 	}
 
