@@ -100,11 +100,11 @@
         <label for="slider">Slide to pick a date:</label>
         {{ $length := len .BTC_DATES }} <!-- Use BTC_DATES length directly -->
         <input type="range" id="slider" min="0" max="{{subtract $length 1}}" value="0">
-        <p>Selected Date: <span id="date-picked">{{index .BTC_DATES 0}}</span> (BTC Price: <span id="btc-price">{{index .BTC_PRICES 0}}</span> USD)</p>
+        <p>Selected Date: <span class="date-picked">{{index .BTC_DATES 0}}</span> (BTC Price: <span id="btc-price">{{index .BTC_PRICES 0}}</span> USD)</p>
     
         <form onsubmit="calculate(); return false;">
             <div>
-                What if you invested on <span id="date-picked">{{index .BTC_DATES 0}}</span>?
+                What if you invested on <span class="date-picked">{{index .BTC_DATES 0}}</span>?
                 <br>Slide to pick a different date and see how much you'd have today.
             </div>
             <br>
@@ -194,13 +194,13 @@
         document.addEventListener("DOMContentLoaded", () => {
             // Get DOM elements
             const slider = document.getElementById("slider");
-            const dateOutput = document.getElementById("date-picked");
+            const dateOutputs = document.getElementsByClassName("date-picked");
             const priceOutput = document.getElementById("btc-price");
             const investmentInput = document.getElementById("number");
             const resultOutput = document.getElementById("newnumber");
     
             // Ensure elements exist
-            if (!slider || !dateOutput || !priceOutput || !investmentInput || !resultOutput) {
+            if (!slider || dateOutputs.length === 0 || !priceOutput || !investmentInput || !resultOutput) {
                 console.error("One or more required elements are missing in the DOM.");
                 return;
             }
@@ -210,13 +210,13 @@
             const dates = [{{range $i, $x := .BTC_DATES}}"{{$x}}"{{if ne $i (subtract (len $.BTC_DATES) 1)}},{{end}}{{end}}];
     
             // Initialize with first date and price
-            dateOutput.textContent = dates[0];
+            Array.from(dateOutputs).forEach(el => el.textContent = dates[0]);
             priceOutput.textContent = prices[0];
     
             // Update date and price when slider moves
             slider.addEventListener("input", () => {
                 const index = parseInt(slider.value);
-                dateOutput.textContent = dates[index];
+                Array.from(dateOutputs).forEach(el => el.textContent = dates[index]);
                 priceOutput.textContent = prices[index].toFixed(2); // Ensure 2 decimal places
             });
     
