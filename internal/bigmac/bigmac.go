@@ -120,7 +120,7 @@ func GenerateChartData(btcData bitcoin_price.BitcoinPriceFetcher, h, w, spaceDif
 	for _, data := range bmData.Prices {
 		X1Array = append(
 			X1Array,
-			float64(spaceDiff)+(float64(data.Date-bmData.LowestDate)*float64(sizeWidth-spaceDiff)/float64(bmData.BiggestDate-bmData.LowestDate)),
+			float64(spaceDiff)+(float64(data.Date-bmData.LowestDate)*float64(sizeWidth-(2*spaceDiff))/float64(bmData.BiggestDate-bmData.LowestDate)),
 		)
 		Y1Array = append(
 			Y1Array,

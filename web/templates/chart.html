@@ -19,6 +19,17 @@
             width: 90%;
             background-color: #fff;
             padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chart-container svg {
+            /* width: 100%; */
+            /* height: auto; */
+            margin: auto;
+            display: block;
         }
 
         h2 {
@@ -45,11 +56,19 @@
             border-radius: 3px;
         }
 
+        #calculated {
+            text-align: right;
+        }
+
         .form-container {
             margin-top: 5px;
             padding: 10px;
             background-color: #fff;
             border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
 
         label {
@@ -93,23 +112,21 @@
         }
     </style>
 </head>
-
 <body>
     <div class="form-container">
         <h2>How much did I fuck up?</h2>
-        <label for="slider">Slide to pick a date:</label>
-        {{ $length := len .BTC_DATES }} <!-- Use BTC_DATES length directly -->
-        <input type="range" id="slider" min="0" max="{{subtract $length 1}}" value="0">
-        <p>Selected Date: <span class="date-picked">{{index .BTC_DATES 0}}</span> (BTC Price: <span id="btc-price">{{index .BTC_PRICES 0}}</span> USD)</p>
-    
         <form onsubmit="calculate(); return false;">
             <div>
-                What if you invested on <span class="date-picked">{{index .BTC_DATES 0}}</span>?
+                <label for="slider">Slide to pick a date:</label>
+                {{ $length := len .BTC_DATES }} <!-- Use BTC_DATES length directly -->
+                <input type="range" id="slider" min="0" max="{{subtract $length 1}}" value="0">
+                <p>Selected Date: <span class="date-picked">{{index .BTC_DATES 0}}</span> (BTC Price: <span id="btc-price">{{index .BTC_PRICES 0}}</span> USD)</p>
+                <br>
+                What if you invested on <strong class="date-picked">{{index .BTC_DATES 0}}</strong>?
                 <br>Slide to pick a different date and see how much you'd have today.
             </div>
             <br>
             <label for="number">Enter how much USD you could have invested:</label>
-            <br>
             <input id="number" type="text" name="investment" value="" placeholder="e.g., 100">
             <br>
             <button type="submit" name="button" class="btn btn-secondary">Calculate</button>
@@ -119,31 +136,28 @@
     </div>
     <div class="chart-container" alt="container with chart data">
         <h2>Big Mac Price History: USD vs Satoshi</h2>
-        <svg width="add {{.SizeSVGW}} $.SpaceDiff" height="{{.SizeSVGH}}" viewBox="0 0 add {{.SizeSVGW}} $.SpaceDiff {{.SizeSVGH}}"
+        <svg width="{{add $.SizeSVGW $.SpaceDiff}}" height="{{.SizeSVGH}}" viewBox="0 0 {{ add .SizeSVGW $.SpaceDiff }} {{.SizeSVGH}}"
             xmlns="http://www.w3.org/2000/svg">
             <!-- Background -->
             <rect x="0" y="0" width="{{.SizeSVGW}}" height="{{.SizeSVGH}}" fill="#f8f9fa" />
     
             <!-- X and Y Axis -->
-            <line x1="50" y1="{{subtract .SizeSVGH $.SpaceDiff}}" x2="{{subtract .SizeSVGW $.SpaceDiff}}" y2="{{subtract .SizeSVGH $.SpaceDiff}}"
-                stroke="#333" stroke-width="2" />
+            <line x1="50" y1="{{subtract .SizeSVGH $.SpaceDiff}}" x2="{{subtract .SizeSVGW $.SpaceDiff}}" y2="{{subtract .SizeSVGH $.SpaceDiff}}"stroke="#333" stroke-width="2" />
             <line x1="50" y1="50" x2="50" y2="{{subtract .SizeSVGH $.SpaceDiff}}" stroke="#333" stroke-width="2" />
 
             <!-- Grid lines (optional) -->
             {{$height := subtract .SizeSVGH 100}}
             {{$width := subtract .SizeSVGW 100}}
             {{range $i := iterate 5}}
-                {{$y := calculateGridY $height $i}}
-                <line x1="50" y1="{{$y}}" x2="{{subtract $.SizeSVGW $.SpaceDiff}}" y2="{{$y}}" stroke="#ddd" stroke-width="1" stroke-dasharray="5,5" />
+            {{$y := calculateGridY $height $i}}
+            <line x1="50" y1="{{$y}}" x2="{{subtract $.SizeSVGW $.SpaceDiff}}" y2="{{$y}}" stroke="#ddd" stroke-width="1" stroke-dasharray="5,5" />
             {{end}}
 
             <!-- USD Price Line Chart Path -->
-            <polyline fill="none" stroke="#007bff" stroke-width="2"
-                points="{{range $i, $x := .X1Array}}{{if $i}} {{end}}{{$x}},{{index $.Y1Array $i}}{{end}}" />
+            <polyline fill="none" stroke="#007bff" stroke-width="2" points="{{range $i, $x := .X1Array}}{{if $i}} {{end}}{{$x}},{{index $.Y1Array $i}}{{end}}" />
     
             <!-- Satoshi Price Line Chart Path -->
-            <polyline fill="none" stroke="#ff7700" stroke-width="2"
-                points="{{range $i, $x := .X1Array}}{{if $i}} {{end}}{{$x}},{{index $.Y1ArraySatoshi $i}}{{end}}" />
+            <polyline fill="none" stroke="#ff7700" stroke-width="2" points="{{range $i, $x := .X1Array}}{{if $i}} {{end}}{{$x}},{{index $.Y1ArraySatoshi $i}}{{end}}" />
     
             <!-- Data Points for USD -->
             {{range $i, $x := .X1Array}}
@@ -174,8 +188,7 @@
             {{range $i := iterate 5}}
             {{$y := calculateYAxisLabel $.SizeSVGH $i 4}}
             {{$sats := multiply $i (divide $.MaxPriceSatoshi 4)}}
-            <text x="{{add (subtract $.SizeSVGW $.SpaceDiff) 5}}" y="{{$y}}" text-anchor="start" font-size="12"
-                fill="#ff7700">{{formatSats $sats}} sats</text>
+            <text x="{{add (subtract $.SizeSVGW $.SpaceDiff) 5}}" y="{{$y}}" text-anchor="start" font-size="12" fill="#ff7700">{{formatSats $sats}} sats</text>
             {{end}}
         </svg>
         <div class="legend">

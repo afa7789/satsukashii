@@ -12,8 +12,9 @@ func (s *Server) chartPage(bpr bitcoin_price.BTCPricesRanged, cd bigmac.ChartDat
 	return func(c *fiber.Ctx) error {
 
 		return c.Status(http.StatusOK).Render("chart.html", fiber.Map{
-			"SizeSVGH": cd.SizeHeight,
-			"SizeSVGW": cd.SizeWidth,
+			"SizeSVGH":  cd.SizeHeight,
+			"SizeSVGW":  cd.SizeWidth,
+			"SpaceDiff": cd.SpaceDiff,
 			// normal price lines
 			"X1Array": cd.X1Array,
 			"Y1Array": cd.Y1Array,
