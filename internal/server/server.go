@@ -41,7 +41,7 @@ func New() *Server {
 	})
 
 	var btcData bitcoin_price.BitcoinPriceFetcher
-	btcData, err := bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2024-12-05.csv")
+	btcData, err := bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2025-03-25.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -63,6 +63,7 @@ func New() *Server {
 	r.Static("/public", "./web/static")
 
 	r.Get("/", server.chartPage(bpr, cd))
+	r.Get("/json", server.GetChartJSON(cd))
 
 	server.router = r
 	return server

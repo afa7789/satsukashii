@@ -114,7 +114,7 @@ func TestCriticalFlow(t *testing.T) {
 	}
 	t.Logf("Price for USD on %s: %f", dateCSV, bigmacPrice)
 
-	bpcsv, err := bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2024-12-05.csv")
+	bpcsv, err := bitcoin_price.NewBTCPricesCSV("assets/csv/bitcoin_2010-07-17_2025-04-25.csv")
 	if err != nil {
 		t.Fatalf("Failed to load Bitcoin price CSV: %v", err)
 	}
