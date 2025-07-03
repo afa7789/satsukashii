@@ -39,4 +39,4 @@ DAYW License. See [LICENSE](LICENSE) for details.
 
 ## Screenshot
 
-<img src="Screenshot 2025-07-03 at 6.41.50 PM.png" alt="screenshot of page">
+<img src="asset/screenshot.png" alt="screenshot of page">

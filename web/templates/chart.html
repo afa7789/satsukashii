@@ -3,207 +3,459 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Satsukashii: BigMac & Bitcoin price analysis  </title>
+    <title>SATSUKASHII: BigMac & Bitcoin price analysis</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍔</text></svg>">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #2b2b2b;
-            color:#f4f4f9;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #fff;
+            line-height: 1.4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* HEADER */
+        .header {
+            border: 4px solid #fff;
+            padding: 30px;
+            margin-bottom: 30px;
+            background: #000;
+        }
+
+        .header h1 {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        .header a {
+            color: #000;
+            background: #fff;
+            text-decoration: none;
+            border: 2px solid #fff;
+            padding: 8px 16px;
+            display: inline-block;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
+            font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+        }
+
+        .header a:hover {
+            background: #000;
+            color: #fff;
+            transform: translate(-3px, -3px);
+            box-shadow: 3px 3px 0 #fff;
+        }
+
+        /* CALCULATOR */
+        .calculator {
+            border: 4px solid #fff;
+            padding: 30px;
+            margin-bottom: 30px;
+            background: #111;
+        }
+
+        .calculator h2 {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+        }
+
+        /* SLIDER */
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: #333;
+            border: 2px solid #fff;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            border-radius: 0;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border: 2px solid #000;
+            cursor: pointer;
+            border-radius: 0;
+        }
+
+        .date-info {
+            background: #222;
+            border: 2px solid #fff;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+        }
+
+        .date-info strong {
+            font-weight: 900;
+        }
+
+        /* INPUT */
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            background: #000;
+            border: 3px solid #fff;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: 900;
+            outline: none;
+            text-transform: uppercase;
+        }
+
+        input[type="text"]:focus {
+            background: #111;
+            box-shadow: 0 0 10px #fff;
+        }
+
+        /* BUTTON */
+        .calc-button {
+            background: #fff;
+            color: #000;
+            border: 4px solid #fff;
+            padding: 15px 30px;
+            font-family: 'Courier New', monospace;
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .calc-button:hover {
+            background: #000;
+            color: #fff;
+            transform: translate(-3px, -3px);
+            box-shadow: 3px 3px 0 #fff;
+        }
+
+        .result {
+            background: #222;
+            border: 3px solid #fff;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result-label {
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            font-weight: 900;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .result-value {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        /* CHART SECTION */
+        .chart-section {
+            border: 4px solid #fff;
+            padding: 30px;
+            background: #111;
+        }
+
+        .chart-section h2 {
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            font-weight: 900;
+        }
+
+        /* SVG CONTAINER */
         .chart-container {
-            margin: 10px auto;
-            width: 90%;
+            width: 100%;
+            background: #000;
+            border: 2px solid #fff;
             padding: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+            margin-bottom: 20px;
         }
 
         .chart-container svg {
             width: 100%;
             height: auto;
-            margin: auto;
-            display: block;
+            min-height: 400px;
+            background: #000;
         }
 
-        h2 {
-            text-align: center;
-            color: #007bff;
-        }
-
+        /* LEGEND */
         .legend {
             display: flex;
             justify-content: center;
-            margin-top: 5px;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 15px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            margin: 0 5px;
+            gap: 10px;
+            background: #222;
+            padding: 10px 20px;
+            border: 2px solid #fff;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: clamp(0.8rem, 1.5vw, 0.9rem);
         }
 
         .legend-color {
-            width: 5px;
-            height: 5px;
-            margin-right: 5px;
-            border-radius: 3px;
+            width: 15px;
+            height: 15px;
+            border: 2px solid #fff;
         }
 
-        #calculated {
-            text-align: right;
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header, .calculator, .chart-section {
+                padding: 20px;
+            }
+            
+            .legend {
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
-        .form-container {
-            margin-top: 5px;
-            padding: 10px;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        /* SVG STYLES */
+        .grid-line {
+            stroke: #333;
+            stroke-width: 1;
+            stroke-dasharray: 2,2;
         }
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
+        .axis {
+            stroke: #fff;
+            stroke-width: 2;
         }
 
-        input[type="text"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        .usd-line {
+            fill: none;
+            stroke: #00ff00;
+            stroke-width: 3;
         }
 
-        button {
-            display: inline-block;
-            padding: 10px 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
+        .sats-line {
+            fill: none;
+            stroke: #ff6600;
+            stroke-width: 2;
+            stroke-dasharray: 4,4;
         }
 
-        button:hover {
-            background-color: #0056b3;
+        .usd-point {
+            fill: #00ff00;
+            stroke: none;
         }
 
-        p {
-            font-size: 12px;
-            margin: 5px 0;
+        .sats-point {
+            fill: #ff6600;
+            stroke: none;
         }
 
-        .result {
-            font-size: 14px;
-            font-weight: bold;
-            color: #28a745;
+        .axis-label {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            text-anchor: middle;
+            fill: #999;
+        }
+
+        .y-axis-label-usd {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            text-anchor: end;
+            fill: #fff;
+        }
+
+        .y-axis-label-sats {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            font-weight: 900;
+            text-anchor: start;
+            fill: #999;
         }
     </style>
 </head>
 <body>
-    <div class="chart-container" style="margin-bottom: 0;">
-        <h3 style="margin-bottom: 0;">Big Mac & Bitcoin Price Analysis ! <a href="https://github.com/afa7789/satsukashii">check the github here</a></h1>
-    </div>
-    <div class="form-container">
-        <h2>How much did I fuck up?</h2>
-        <form onsubmit="calculate(); return false;">
-            <div>
-                <label for="slider">Slide to pick a date:</label>
-                {{ $length := len .BTC_DATES }} <!-- Use BTC_DATES length directly -->
-                <input type="range" id="slider" min="0" max="{{subtract $length 1}}" value="0">
-                <p>Selected Date: <span class="date-picked">{{index .BTC_DATES 0}}</span> (BTC Price: <span id="btc-price">{{index .BTC_PRICES 0}}</span> USD)</p>
-                <br>
-                What if you invested on <strong class="date-picked">{{index .BTC_DATES 0}}</strong>?
-                <br>Slide to pick a different date and see how much you'd have today.
-            </div>
-            <br>
-            <label for="number">Enter how much USD you could have invested:</label>
-            <input id="number" type="text" name="investment" value="" placeholder="e.g., 100">
-            <br>
-            <button type="submit" name="button" class="btn btn-secondary">Calculate</button>
-            <br>
-            <p id="calculated">You could have today: <b><span id="newnumber">--</span></b></p>
-        </form>
-    </div>
-    <div class="chart-container" alt="container with chart data">
-        <h2>Big Mac Price History: USD vs Satoshi</h2>
-        <svg width="{{add $.SizeSVGW $.SpaceDiff}}" height="{{.SizeSVGH}}" viewBox="0 0 {{ add .SizeSVGW $.SpaceDiff }} {{.SizeSVGH}}"
-            xmlns="http://www.w3.org/2000/svg">
-            <!-- Background -->
-            <rect x="0" y="0" width="{{add $.SizeSVGW (add $.SpaceDiff 20) }}" height="{{.SizeSVGH}}" fill="#f8f9fa" />
-    
-            <!-- X and Y Axis -->
-            <line x1="50" y1="{{subtract .SizeSVGH $.SpaceDiff}}" x2="{{subtract .SizeSVGW $.SpaceDiff}}" y2="{{subtract .SizeSVGH $.SpaceDiff}}"stroke="#333" stroke-width="2" />
-            <line x1="50" y1="50" x2="50" y2="{{subtract .SizeSVGH $.SpaceDiff}}" stroke="#333" stroke-width="2" />
+    <div class="container">
+        <div class="header">
+            <h1>SATSUKASHII</h1>
+            <p>BigMac & Bitcoin price analysis</p>
+            <a href="https://github.com/afa7789/satsukashii">check the github here</a>
+        </div>
 
-            <!-- Grid lines (optional) -->
-            {{$height := subtract .SizeSVGH 100}}
-            {{$width := subtract .SizeSVGW 100}}
-            {{range $i := iterate 5}}
-            {{$y := calculateGridY $height $i}}
-            <line x1="50" y1="{{$y}}" x2="{{subtract $.SizeSVGW $.SpaceDiff}}" y2="{{$y}}" stroke="#ddd" stroke-width="1" stroke-dasharray="5,5" />
-            {{end}}
+        <div class="calculator">
+            <h2>HOW MUCH DID I FUCK UP?</h2>
+            <form onsubmit="calculate(); return false;">
+                <div class="form-group">
+                    <label for="slider">SLIDE TO PICK A DATE:</label>
+                    {{$length := len .BTC_DATES}}
+                    <input type="range" id="slider" min="0" max="{{subtract $length 1}}" value="0">
+                    <div class="date-info">
+                        <strong>SELECTED DATE:</strong> <span class="date-picked">{{index .BTC_DATES 0}}</span><br>
+                        <strong>BTC PRICE:</strong> $<span id="btc-price">{{index .BTC_PRICES 0}}</span><br>
+                        <strong>What if you invested on </strong><span class="date-picked">{{index .BTC_DATES 0}}</span><strong>?</strong><br>
+                        Slide to pick a different date and see how much you'd have today.
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="number">ENTER HOW MUCH USD YOU COULD HAVE INVESTED:</label>
+                    <input id="number" type="text" name="investment" value="100" placeholder="e.g., 100">
+                </div>
+                
+                <button type="submit" class="calc-button">CALCULATE</button>
+                
+                <div class="result">
+                    <div class="result-label">YOU COULD HAVE TODAY:</div>
+                    <div class="result-value" id="newnumber">--</div>
+                </div>
+            </form>
+        </div>
 
-            <!-- USD Price Line Chart Path -->
-            <polyline fill="none" stroke="#007bff" stroke-width="2" points="{{range $i, $x := .X1Array}}{{if $i}} {{end}}{{$x}},{{index $.Y1Array $i}}{{end}}" />
-    
-            <!-- Satoshi Price Line Chart Path -->
-            <polyline fill="none" stroke="#ff7700" stroke-width="2" points="{{range $i, $x := .X1Array}}{{if $i}} {{end}}{{$x}},{{index $.Y1ArraySatoshi $i}}{{end}}" />
-    
-            <!-- Data Points for USD -->
-            {{range $i, $x := .X1Array}}
-            <circle cx="{{$x}}" cy="{{index $.Y1Array $i}}" r="3" fill="#007bff" />
-            {{end}}
-    
-            <!-- Data Points for Satoshi -->
-            {{range $i, $x := .X1Array}}
-            <circle cx="{{$x}}" cy="{{index $.Y1ArraySatoshi $i}}" r="3" fill="#ff7700" />
-            {{end}}
-    
-            <!-- X-Axis Labels (normalized positions) -->
-            {{range $i := iterate 6}}
-            {{$xPos := calculateGridX $width $i 5}}
-            <text x="{{$xPos}}" y="{{add (subtract $.SizeSVGH $.SpaceDiff) 20}}" text-anchor="middle" font-size="12">
-                {{add $i 1}}
-            </text>
-            {{end}}
-    
-            <!-- Y-Axis Labels for USD -->
-            {{range $i := iterate 5}}
-            {{$y := calculateYAxisLabel $.SizeSVGH $i 4}}
-            {{$price := multiply $i (divide $.MaxPrice 4)}}
-            <text x="45" y="{{$y}}" text-anchor="end" font-size="12" fill="#007bff">${{formatPrice $price}}</text>
-            {{end}}
-    
-            <!-- Y-Axis Labels for Satoshi (right side) -->
-            {{range $i := iterate 5}}
-            {{$y := calculateYAxisLabel $.SizeSVGH $i 4}}
-            {{$sats := multiply $i (divide $.MaxPriceSatoshi 4)}}
-            <text x="{{add (subtract $.SizeSVGW $.SpaceDiff) 5}}" y="{{$y}}" text-anchor="start" font-size="12" fill="#ff7700">{{formatSats $sats}} sats</text>
-            {{end}}
-        </svg>
-        <div class="legend">
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #007bff;"></div>
-                <span>Big Mac Price (USD)</span>
+        <div class="chart-section">
+            <h2>BIG MAC PRICE HISTORY: USD VS SATOSHI</h2>
+            <div class="chart-container">
+                <svg viewBox="0 0 {{add .SizeSVGW .SpaceDiff}} {{.SizeSVGH}}" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background -->
+                    <rect x="0" y="0" width="{{add .SizeSVGW .SpaceDiff}}" height="{{.SizeSVGH}}" fill="#000" />
+                    
+                    <!-- Grid lines -->
+                    {{$height := subtract .SizeSVGH 100}}
+                    {{$width := subtract .SizeSVGW 100}}
+                    {{range $i := iterate 5}}
+                    {{$y := calculateGridY $height $i}}
+                    <line x1="50" y1="{{$y}}" x2="{{subtract $.SizeSVGW $.SpaceDiff}}" y2="{{$y}}" class="grid-line" />
+                    {{end}}
+                    
+                    <!-- Vertical grid lines -->
+                    {{range $i := iterate 6}}
+                    {{$x := calculateGridX $width $i 5}}
+                    <line x1="{{$x}}" y1="50" x2="{{$x}}" y2="{{subtract $.SizeSVGH $.SpaceDiff}}" class="grid-line" />
+                    {{end}}
+                    
+                    <!-- X and Y Axis -->
+                    <line x1="50" y1="{{subtract .SizeSVGH .SpaceDiff}}" x2="{{subtract .SizeSVGW .SpaceDiff}}" y2="{{subtract .SizeSVGH .SpaceDiff}}" class="axis" />
+                    <line x1="50" y1="50" x2="50" y2="{{subtract .SizeSVGH .SpaceDiff}}" class="axis" />
+                    
+                    <!-- USD Price Line -->
+                    <polyline class="usd-line" points="{{range $i, $x := .X1Array}}{{if $i}} {{end}}{{$x}},{{index $.Y1Array $i}}{{end}}" />
+                    
+                    <!-- Satoshi Price Line -->
+                    <polyline class="sats-line" points="{{range $i, $x := .X1Array}}{{if $i}} {{end}}{{$x}},{{index $.Y1ArraySatoshi $i}}{{end}}" />
+                    
+                    <!-- USD Data Points -->
+                    {{range $i, $x := .X1Array}}
+                    <circle cx="{{$x}}" cy="{{index $.Y1Array $i}}" r="4" class="usd-point" />
+                    {{end}}
+                    
+                    <!-- Satoshi Data Points -->
+                    {{range $i, $x := .X1Array}}
+                    <circle cx="{{$x}}" cy="{{index $.Y1ArraySatoshi $i}}" r="3" class="sats-point" />
+                    {{end}}
+                    
+                    <!-- X-Axis Labels -->
+                    {{range $i := iterate 6}}
+                    {{$xPos := calculateGridX $width $i 5}}
+                    <text x="{{$xPos}}" y="{{add (subtract $.SizeSVGH $.SpaceDiff) 20}}" class="axis-label">
+                        {{if eq $i 0}}2010{{else if eq $i 1}}2013{{else if eq $i 2}}2016{{else if eq $i 3}}2019{{else if eq $i 4}}2022{{else if eq $i 5}}2025{{end}}
+                    </text>
+                    {{end}}
+                    
+                    <!-- Y-Axis Labels for USD (left) -->
+                    {{range $i := iterate 5}}
+                    {{$y := calculateYAxisLabel $.SizeSVGH $i 4}}
+                    {{$price := multiply $i (divide $.MaxPrice 4)}}
+                    <text x="45" y="{{$y}}" class="y-axis-label-usd">${{formatPrice $price}}</text>
+                    {{end}}
+                    
+                    <!-- Y-Axis Labels for Satoshi (right) -->
+                    {{range $i := iterate 5}}
+                    {{$y := calculateYAxisLabel $.SizeSVGH $i 4}}
+                    {{$sats := multiply $i (divide $.MaxPriceSatoshi 4)}}
+                    <text x="{{add (subtract $.SizeSVGW $.SpaceDiff) 5}}" y="{{$y}}" class="y-axis-label-sats">{{formatSats $sats}} sats</text>
+                    {{end}}
+                </svg>
             </div>
-            <div class="legend-item">
-                <div class="legend-color" style="background-color: #ff7700;"></div>
-                <span>Big Mac Price (Satoshi)</span>
+            
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #00ff00;"></div>
+                    <span>Big Mac Price (USD)</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #ff6600;"></div>
+                    <span>Big Mac Price (Satoshi)</span>
+                </div>
             </div>
         </div>
     </div>
+
     <script>
-        // Wait for the DOM to load before running the script
+        // Wait for DOM to load
         document.addEventListener("DOMContentLoaded", () => {
             // Get DOM elements
             const slider = document.getElementById("slider");
@@ -211,28 +463,28 @@
             const priceOutput = document.getElementById("btc-price");
             const investmentInput = document.getElementById("number");
             const resultOutput = document.getElementById("newnumber");
-    
+
             // Ensure elements exist
             if (!slider || dateOutputs.length === 0 || !priceOutput || !investmentInput || !resultOutput) {
                 console.error("One or more required elements are missing in the DOM.");
                 return;
             }
-    
+
             // Data from Go template
             const prices = [{{range $i, $x := .BTC_PRICES}}{{$x}}{{if ne $i (subtract (len $.BTC_PRICES) 1)}},{{end}}{{end}}];
             const dates = [{{range $i, $x := .BTC_DATES}}"{{$x}}"{{if ne $i (subtract (len $.BTC_DATES) 1)}},{{end}}{{end}}];
-    
+
             // Initialize with first date and price
             Array.from(dateOutputs).forEach(el => el.textContent = dates[0]);
             priceOutput.textContent = prices[0];
-    
+
             // Update date and price when slider moves
             slider.addEventListener("input", () => {
                 const index = parseInt(slider.value);
                 Array.from(dateOutputs).forEach(el => el.textContent = dates[index]);
-                priceOutput.textContent = prices[index].toFixed(2); // Ensure 2 decimal places
+                priceOutput.textContent = prices[index].toFixed(2);
             });
-    
+
             // Fetch current Bitcoin price
             async function fetchBitcoinPrice() {
                 try {
@@ -244,33 +496,32 @@
                     return null;
                 }
             }
-    
+
             // Calculate potential value today
-            async function calculate() {
+            window.calculate = async function() {
                 const usdInvested = parseFloat(investmentInput.value) || 0;
                 const selectedPrice = parseFloat(prices[slider.value]);
+                
                 if (usdInvested <= 0 || !selectedPrice || isNaN(selectedPrice)) {
-                    resultOutput.textContent = "Enter a valid USD amount and select a date";
+                    resultOutput.textContent = "Enter a valid USD amount";
                     return;
                 }
-    
+
+                resultOutput.textContent = "Calculating...";
+                
                 const btcBought = usdInvested / selectedPrice;
                 const currentPrice = await fetchBitcoinPrice();
-    
+
                 if (currentPrice) {
-                    const todayValue = (btcBought * currentPrice).toLocaleString("en-US", { style: "currency", currency: "USD" });
-                    resultOutput.textContent = todayValue;
+                    const todayValue = btcBought * currentPrice;
+                    resultOutput.textContent = `$${todayValue.toLocaleString("en-US", { 
+                        minimumFractionDigits: 2, 
+                        maximumFractionDigits: 2 
+                    })}`;
                 } else {
                     resultOutput.textContent = "Error fetching current price";
                 }
-            }
-    
-            // Attach the calculate function to the form's submit event
-            const form = document.querySelector("form");
-            form.addEventListener("submit", (event) => {
-                event.preventDefault(); // Prevent form submission
-                calculate();
-            });
+            };
         });
     </script>
 </body>
